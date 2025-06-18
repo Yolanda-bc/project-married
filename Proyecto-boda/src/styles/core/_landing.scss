@@ -1,0 +1,34 @@
+
+.qr,
+.parrafo {
+  font-family: "Fleur De Leah", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 5rem;
+}
+.image_qr{
+    width: 30rem;
+    height: 30rem;
+}
+.landing {
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+}
+.married {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 8rem;
+    margin-bottom: 20px;
+}
+.button_1{
+    font-family: "Fleur De Leah", cursive;
+    background-color: transparent;
+    border-radius: 5px;
+    font-size: 2rem;
+    padding: 10px 20px;
+}
