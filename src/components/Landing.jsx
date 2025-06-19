@@ -1,4 +1,5 @@
 import React from "react";
+import qr from "../images/qr-code.png";
 import "../styles/core/_landing.scss";
 import { Link } from "react-router-dom";
 function Landing() {
@@ -10,7 +11,7 @@ function Landing() {
         <p className="parrafo">
           Querenos tener todos los recuerdos con cada uno de vosotros
         </p>
-        <img className="image_qr" src="../images/qr-code.png" alt="QR" />
+        <img className="image_qr" src={qr} alt="QR" />
         <p className="qr">Escanea el qr</p>
         <Link to="/main">
           <button className="button_1">Comenzar</button>
