@@ -7,7 +7,7 @@ import BackgroundMusic from "./BackgroundMusic";
 function App() {
   return (
     <>
-      <Router basename="/project-married">
+      <Router>
         <BackgroundMusic />
         <Routes>
           <Route path="/" element={<Landing />} />
