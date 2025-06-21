@@ -9,11 +9,11 @@ function Header() {
         <h1 className="name">Boda de Javier & Jessica</h1>
         <img
           className="cake"
-          src="/images/decoracion.jpg"
+          src="../images/decoracion.jpg"
           alt="foto tarta novios"
         />
         <p className="text">Comparte con nosotros tus mejores momentos</p>
-        <img className="camera" src="/images/camera.png" alt="icon camera" />
+        <img className="camera" src="../images/camera.png" alt="icon camera" />
         <button className="button">Sube tu foto</button>
       </main>
     </>
