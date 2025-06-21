@@ -19,7 +19,7 @@ function BackgroundMusic() {
   return (
     <div className="play">
       <audio ref={audioRef} loop>
-        <source src="../../public/music/melody.mp3" type="audio/mpeg" />
+        <source src="/music/melody.mp3" type="audio/mpeg" />
         Tu navegador no soporta el elemento audio.
       </audio>
       {!playing ? (
