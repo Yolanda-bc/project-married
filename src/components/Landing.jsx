@@ -16,10 +16,6 @@ function Landing() {
         <Link to="/main">
           <button className="button_1">Comenzar</button>
         </Link>
-        {/*<p className="parrafo2">
-          Si no puedes escanear el qr, puedes acceder a la web desde el
-          siguiente enlace:
-        </p>*/}
       </header>
     </>
   );
