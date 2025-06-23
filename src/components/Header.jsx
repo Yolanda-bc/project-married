@@ -34,7 +34,7 @@ function Header() {
       existingImages.push(data.secure_url);
       localStorage.setItem("uploadedImages", JSON.stringify(existingImages));
 
-      navigate("/imagen");
+      navigate("/galeria");
     } catch (err) {
       console.error("Error al subir imagen:", err);
       alert("Error al subir la imagen");
