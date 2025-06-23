@@ -8,7 +8,7 @@ function Gallery() {
     <div>
       <h2>Galería de Fotos</h2>
       {uploadedImages.length > 0 ? (
-        <div>
+        <div className="">
           {uploadedImages.map((url, index) => (
             <div key={index}>
               <img src={url} alt={`Foto ${index + 1}`} />
