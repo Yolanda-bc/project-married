@@ -3,3 +3,38 @@
   margin: 0;
   padding: 0;
 }
+@media (max-width: 768px) {
+  .app-container, .landing {
+    padding: 10px;
+  }
+
+  .text, .qr, .parrafo {
+    font-size: 2.5rem;
+  }
+
+  .name, .married {
+    font-size: 4rem;
+  }
+
+  .cake, .image_qr {
+    width: 100%;
+    height: auto;
+  }
+
+  .camera {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .button, .button_1 {
+    font-size: 1.5rem;
+    padding: 8px 16px;
+    margin: 1rem auto;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    padding: 1rem;
+  }
+}
+

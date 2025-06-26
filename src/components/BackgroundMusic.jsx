@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-
+import music_mp3 from "../music/melody.mp3";
 import "../styles/core/_backgroundMusic.scss";
 
 function BackgroundMusic() {
@@ -19,7 +19,7 @@ function BackgroundMusic() {
   return (
     <div className="play">
       <audio ref={audioRef} loop>
-        <source src="../music/melody.mp3" type="audio/mpeg" />
+        <source src={music_mp3} type="audio/mpeg" />
         Tu navegador no soporta el elemento audio.
       </audio>
       {!playing ? (
