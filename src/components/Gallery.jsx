@@ -1,97 +1,214 @@
-{
-  /*import React, { useEffect, useState } from "react";
-
-function Gallery() {
-  const [images, setImages] = useState([]);
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const res = await fetch(
-          "https://res.cloudinary.com/dsnngazeg/image/list/boda-javi-jessi.json"
-        );
-        const data = await res.json();
-        const imageUrls = data.resources.map(
-          (img) =>
-            `https://res.cloudinary.com/dsnngazeg/image/upload/${img.public_id}.${img.format}`
-        );
-        setImages(imageUrls);
-      } catch (err) {
-        console.error("No se pudieron obtener las imágenes", err);
-        // fallback: mostrar imágenes guardadas en localStorage
-        const fallbackImages =
-          JSON.parse(localStorage.getItem("uploadedImages")) || [];
-        setImages(fallbackImages);
-      }
-    };
-
-    fetchImages();
-  }, []);
-
-  return (
-    <div className="gallery">
-      <h2>Galería de Fotos</h2>
-      {images.length > 0 ? (
-        <div className="gallery-grid">
-          {images.map((url, index) => (
-            <div key={index} className="image-card">
-              <img src={url} alt={`Foto ${index + 1}`} />
-              <a href={url} download target="_blank" rel="noopener noreferrer">
-                Descargar
-              </a>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>No hay imágenes aún.</p>
-      )}
-    </div>
-  );
-}
-
-export default Gallery;*/
-}
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/core/_gallery.scss";
 
 function Gallery() {
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const res = await fetch("http://localhost:4000/images");
-        const data = await res.json();
-        setImages(data);
-      } catch (err) {
-        console.error("Error al cargar imágenes:", err);
-      }
-    };
-
     fetchImages();
+    fetchStats();
   }, []);
+
+  const fetchImages = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Primero verificar que el servidor esté funcionando
+      const healthRes = await fetch("http://localhost:4000/health");
+      if (!healthRes.ok) {
+        throw new Error("El servidor no está disponible");
+      }
+
+      // Obtener las imágenes
+      const res = await fetch("http://localhost:4000/images");
+      if (!res.ok) {
+        throw new Error(`Error del servidor: ${res.status}`);
+      }
+
+      const data = await res.json();
+      setImages(data);
+
+      console.log(`✅ Cargadas ${data.length} imágenes de la boda`);
+    } catch (err) {
+      console.error("❌ Error al cargar imágenes:", err);
+      setError(err.message);
+
+      // Fallback: intentar cargar desde el método alternativo comentado
+      console.log("🔄 Intentando método alternativo...");
+      await fetchImagesAlternative();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Método alternativo para cargar imágenes directamente desde Cloudinary
+  const fetchImagesAlternative = async () => {
+    try {
+      const res = await fetch(
+        "https://res.cloudinary.com/dsnngazeg/image/list/boda-javi-jessi.json"
+      );
+      const data = await res.json();
+
+      if (data.resources) {
+        const imageUrls = data.resources.map((img) => ({
+          secure_url: `https://res.cloudinary.com/dsnngazeg/image/upload/${img.public_id}.${img.format}`,
+          public_id: img.public_id,
+          format: img.format,
+          created_at: img.created_at,
+          // Crear thumbnail optimizado
+          thumbnail_url: `https://res.cloudinary.com/dsnngazeg/image/upload/w_300,h_300,c_fill,q_auto,f_auto/${img.public_id}.${img.format}`,
+        }));
+
+        setImages(imageUrls);
+        setError(null);
+        console.log("✅ Imágenes cargadas con método alternativo");
+      }
+    } catch (altErr) {
+      console.error("❌ Error en método alternativo:", altErr);
+      setError(
+        "No se pudieron cargar las imágenes. Verifica tu conexión a internet."
+      );
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const res = await fetch("http://localhost:4000/stats");
+      if (res.ok) {
+        const data = await res.json();
+        setStats(data);
+      }
+    } catch (err) {
+      // No es crítico si no se pueden cargar las estadísticas
+      console.log("ℹ️ No se pudieron cargar las estadísticas");
+    }
+  };
+
+  const retryLoad = () => {
+    setError(null);
+    fetchImages();
+  };
+
+  if (loading) {
+    return (
+      <div className="gallery">
+        <div className="gallery-header">
+          <h2>Galería de Fotos</h2>
+          <Link to="/main" className="back-link">
+            ← Volver a subir fotos
+          </Link>
+        </div>
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Cargando las hermosas fotos de la boda...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="gallery">
+        <div className="gallery-header">
+          <h2>Galería de Fotos</h2>
+          <Link to="/main" className="back-link">
+            ← Volver a subir fotos
+          </Link>
+        </div>
+        <div className="error-container">
+          <h3>😔 Oops! Algo salió mal</h3>
+          <p>{error}</p>
+          <button className="retry-button" onClick={retryLoad}>
+            🔄 Intentar de nuevo
+          </button>
+          <div className="error-help">
+            <p>
+              <strong>Posibles soluciones:</strong>
+            </p>
+            <ul>
+              <li>
+                Asegúrate de que el servidor esté ejecutándose en puerto 4000
+              </li>
+              <li>Verifica tu conexión a internet</li>
+              <li>Contacta al administrador si el problema persiste</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="gallery">
-      <h2>Galería de Fotos</h2>
+      <div className="gallery-header">
+        <h2>Galería de Fotos de Javier & Jessica</h2>
+        <Link to="/main" className="back-link">
+          ← Volver a subir fotos
+        </Link>
+
+        {stats && (
+          <div className="gallery-stats">
+            <span>📸 {images.length} fotos compartidas</span>
+            <span>💕 Recuerdos únicos de vuestra boda</span>
+          </div>
+        )}
+      </div>
+
       {images.length > 0 ? (
         <div className="gallery-grid">
           {images.map((img, idx) => (
-            <div key={idx}>
-              <img src={img.secure_url} alt={`Foto ${idx + 1}`} />
-              <a
-                href={img.secure_url}
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Descargar
-              </a>
+            <div key={img.public_id || idx} className="image-card">
+              <img
+                src={img.thumbnail_url || img.secure_url}
+                alt={`Foto de la boda ${idx + 1}`}
+                loading="lazy"
+                onError={(e) => {
+                  // Fallback si el thumbnail falla
+                  e.target.src = img.secure_url;
+                }}
+              />
+              <div className="image-overlay">
+                <a
+                  href={img.secure_url}
+                  download={`boda-javier-jessica-${idx + 1}.${
+                    img.format || "jpg"
+                  }`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="download-link"
+                >
+                  📥 Descargar
+                </a>
+                <a
+                  href={img.secure_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="view-link"
+                >
+                  🔍 Ver completa
+                </a>
+              </div>
             </div>
           ))}
         </div>
       ) : (
-        <p>No hay imágenes aún.</p>
+        <div className="empty-gallery">
+          <h3>📸 Aún no hay fotos</h3>
+          <p>¡Sé el primero en compartir un momento especial de la boda!</p>
+          <Link to="/main">
+            <button className="upload-first-button">Subir primera foto</button>
+          </Link>
+        </div>
       )}
+
+      <div className="gallery-footer">
+        <p>💝 Gracias por compartir estos momentos especiales con nosotros</p>
+      </div>
     </div>
   );
 }
