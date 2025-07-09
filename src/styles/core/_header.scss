@@ -1,41 +1,100 @@
-.app-container{
-     background-color: antiquewhite;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    text-align: center;
-    padding: 20px;
-    
+.app-container {
+  background-color: antiquewhite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 20px;
 }
 .text {
-    font-family: "Fleur De Leah", cursive;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 5rem;
+  font-family: "Fleur De Leah", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 5rem;
 }
 .cake {
-    width: 30rem;
-    height: 30rem;
-    object-fit:cover ;
+  width: 30rem;
+  height: 30rem;
+  object-fit: cover;
 }
 .camera {
-    width: 10rem;
-    height: 10rem;
+  width: 10rem;
+  height: 10rem;
 }
-.name{
-     font-family: "Fleur De Leah", cursive;
-    font-size: 8rem;
-    margin-bottom: 8rem;
-    margin-top: 8rem;
+.name {
+  font-family: "Fleur De Leah", cursive;
+  font-size: 8rem;
+  margin-bottom: 8rem;
+  margin-top: 8rem;
 }
 .button {
-   font-family: "Fleur De Leah", cursive;
-    background-color: transparent;
-    border-radius: 5px;
-    font-size: 2rem;
-    padding: 10px 20px;
-    margin-top: 3rem;
-   
+  font-family: "Fleur De Leah", cursive;
+  background-color: transparent;
+  border-radius: 5px;
+  font-size: 2rem;
+  padding: 10px 20px;
+  margin-top: 3rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid #8b4513;
+}
+
+.button:hover {
+  background-color: #8b4513;
+  color: antiquewhite;
+  transform: translateY(-2px);
+}
+
+.button:disabled,
+.button.uploading {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button.uploading {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Estilos para la barra de progreso */
+.upload-progress {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b4513, #cd853f);
+  transition: width 0.3s ease;
+  border-radius: 10px;
+}
+
+.progress-text {
+  font-family: "Fleur De Leah", cursive;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  color: #8b4513;
 }

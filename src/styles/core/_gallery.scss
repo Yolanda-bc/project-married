@@ -1,14 +1,297 @@
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  grid-template-columns: 1fr;
+  gap: 2rem;
   padding: 2rem;
   background-color: antiquewhite;
+  min-height: 100vh;
 }
 
-.gallery img {
+.gallery-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #8b4513;
+  }
+}
+
+.back-link {
+  display: inline-block;
+  font-family: "Fleur De Leah", cursive;
+  font-size: 1.5rem;
+  color: #8b4513;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #8b4513;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #8b4513;
+    color: antiquewhite;
+  }
+}
+
+.gallery-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 1rem 0;
+
+  span {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 1.5rem;
+    color: #8b4513;
+  }
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover .image-overlay {
+    opacity: 1;
+  }
+}
+
+.image-card img {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.download-link,
+.view-link {
+  font-family: "Fleur De Leah", cursive;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  background-color: rgba(139, 69, 19, 0.8);
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: rgba(139, 69, 19, 1);
+  }
+}
+
+/* Estados de carga y error */
+.loading-container,
+.error-container {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #8b4513;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 2rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container p {
+  font-family: "Fleur De Leah", cursive;
+  font-size: 2rem;
+  color: #8b4513;
+}
+
+.error-container {
+  h3 {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 3rem;
+    color: #8b4513;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 1.5rem;
+    color: #8b4513;
+    margin-bottom: 2rem;
+  }
+}
+
+.retry-button {
+  font-family: "Fleur De Leah", cursive;
+  background-color: transparent;
+  border: 2px solid #8b4513;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  color: #8b4513;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #8b4513;
+    color: antiquewhite;
+  }
+}
+
+.error-help {
+  margin-top: 2rem;
+  text-align: left;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 1rem;
+    color: #8b4513;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.empty-gallery {
+  text-align: center;
+  padding: 4rem 2rem;
+
+  h3 {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 3rem;
+    color: #8b4513;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 1.5rem;
+    color: #8b4513;
+    margin-bottom: 2rem;
+  }
+}
+
+.upload-first-button {
+  font-family: "Fleur De Leah", cursive;
+  background-color: transparent;
+  border: 2px solid #8b4513;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  color: #8b4513;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #8b4513;
+    color: antiquewhite;
+    transform: translateY(-2px);
+  }
+}
+
+.gallery-footer {
+  text-align: center;
+  margin-top: 3rem;
+
+  p {
+    font-family: "Fleur De Leah", cursive;
+    font-size: 1.5rem;
+    color: #8b4513;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .gallery {
+    padding: 1rem;
+  }
+
+  .gallery-header h2 {
+    font-size: 2.5rem;
+  }
+
+  .gallery-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    span {
+      font-size: 1.2rem;
+    }
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .image-card img {
+    height: 200px;
+  }
+
+  .image-overlay {
+    opacity: 1; // Siempre visible en móvil
+  }
+
+  .download-link,
+  .view-link {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
 }
