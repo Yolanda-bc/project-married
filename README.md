@@ -171,6 +171,41 @@ npm run dev      # Desarrollo con nodemon
 - `GET /images` - Lista de fotos de la boda
 - `GET /stats` - Estadísticas de la galería
 
+## ☁️ Despliegue gratuito en Vercel
+
+Con estos cambios, la app funciona en Vercel sin servidor dedicado. Los endpoints viven en `/api/*` como funciones serverless.
+
+### 1) Variables de entorno (en Vercel)
+
+Añade en tu proyecto de Vercel → Settings → Environment Variables:
+
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+
+Re-despliega tras guardarlas.
+
+### 2) Build en Vercel
+
+- Framework: Vite (autodetectado)
+- Build command: `npm run build`
+- Output directory: `dist`
+
+### 3) Endpoints serverless
+
+- `GET /api/health`
+- `GET /api/images`
+- `GET /api/stats`
+
+El frontend detecta automáticamente `/api/*` cuando está en Vercel y usa `http://localhost:4000/*` en local.
+
+### 4) Verificación rápida
+
+1. Abre `https://<tu-dominio-vercel>/api/health` → debe responder `{"status":"ok"}`
+2. Abre la app → página de galería debería cargar imágenes sin levantar el backend local.
+
+Nota: La subida de imágenes sigue siendo directa a Cloudinary con `upload_preset` sin firmar (no requiere backend).
+
 ## ⚠️ Solución de Problemas
 
 ### **Error: "El servidor no está disponible"**

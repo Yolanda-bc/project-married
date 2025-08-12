@@ -7,25 +7,50 @@ function Gallery() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState(null);
+  const [apiBase, setApiBase] = useState("/api");
 
   useEffect(() => {
     fetchImages();
     fetchStats();
   }, []);
 
+  const determineApiBase = async () => {
+    // Intenta primero serverless en el mismo dominio (/api). Si falla, usa backend local
+    try {
+      const healthRes = await fetch(`/api/health`, { cache: "no-store" });
+      if (healthRes.ok) {
+        setApiBase("/api");
+        return "/api";
+      }
+    } catch (_) {
+      // Ignorar y probar localhost
+    }
+
+    try {
+      const localHealth = await fetch("http://localhost:4000/health", {
+        cache: "no-store",
+      });
+      if (localHealth.ok) {
+        setApiBase("http://localhost:4000");
+        return "http://localhost:4000";
+      }
+    } catch (_) {
+      // No disponible
+    }
+
+    return null;
+  };
+
   const fetchImages = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Primero verificar que el servidor esté funcionando
-      const healthRes = await fetch("http://localhost:4000/health");
-      if (!healthRes.ok) {
-        throw new Error("El servidor no está disponible");
-      }
+      const base = await determineApiBase();
+      if (!base) throw new Error("El servidor no está disponible");
 
-      // Obtener las imágenes
-      const res = await fetch("http://localhost:4000/images");
+      // Obtener las imágenes desde el base detectado
+      const res = await fetch(`${base}/images`, { cache: "no-store" });
       if (!res.ok) {
         throw new Error(`Error del servidor: ${res.status}`);
       }
@@ -78,7 +103,9 @@ function Gallery() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch("http://localhost:4000/stats");
+      const base = await determineApiBase();
+      if (!base) return;
+      const res = await fetch(`${base}/stats`, { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
         setStats(data);
