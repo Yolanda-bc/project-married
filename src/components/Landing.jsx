@@ -1,5 +1,5 @@
 import React from "react";
-import qr_image from "../images/qr-code.png";
+import qr_image from "../images/qr-code2.png";
 
 import "../styles/core/_landing.scss";
 import { Link } from "react-router-dom";
