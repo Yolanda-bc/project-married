@@ -10,7 +10,7 @@ function Landing() {
         <h1 className="married">Javier & Jessica</h1>
 
         <p className="parrafo">
-          Querenos tener todos los recuerdos con cada uno de vosotros
+          Queremos tener todos los recuerdos con cada uno de vosotros
         </p>
         <img className="image_qr" src={qr_image} alt="QR" />
         <p className="qr">Escanea el qr</p>
