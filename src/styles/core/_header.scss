@@ -6,7 +6,7 @@
   justify-content: center;
   height: 100%;
   text-align: center;
-  padding: 20px;
+  
 }
 .text {
   font-family: "Fleur De Leah", cursive;
@@ -98,3 +98,19 @@
   margin-top: 1rem;
   color: #8b4513;
 }
+
+@media (max-width: 768px) {
+  .name {
+    font-size: 3rem;
+  }
+
+.cake {
+  width: 23rem;
+  height: 23rem;
+  object-fit: cover;
+}
+.text {
+  font-size: 3rem;
+}
+}
+
