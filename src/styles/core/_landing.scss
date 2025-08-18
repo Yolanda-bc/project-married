@@ -1,10 +1,11 @@
 
 .qr,
-.parrafo {
+.parrafo,
+.url {
   font-family: "Fleur De Leah", cursive;
   font-weight: 400;
   font-style: normal;
-  font-size: 5rem;
+  font-size: 2rem;
 }
 .image_qr{
     width: 30rem;
@@ -31,4 +32,24 @@
     border-radius: 5px;
     font-size: 2rem;
     padding: 10px 20px;
+}
+@media (max-width: 768px){
+    .image_qr {
+        width: 20rem;
+        height: 20rem;
+    }
+    .landing {
+        margin: 0;
+        padding: 0;
+    }
+    .married {
+        font-size: 3rem;
+    }
+    .parrafo {
+ margin-left: 10px; 
+        
+    }
+    .url {
+        font-size: 1rem;
+    }
 }
